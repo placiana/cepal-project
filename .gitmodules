@@ -1,0 +1,6 @@
+[submodule "cepal-dashboard"]
+	path = cepal-dashboard
+	url = git@github.com:sistemasmarcelocastro/cepal-dashboard.git
+[submodule "cepal-tdp"]
+	path = cepal-tdp
+	url = git@github.com:TobiasCarreira/cepal-tdp.git

@@ -1,0 +1,18 @@
+
+services:
+  api:
+    build: ./cepal-tdp
+    container_name: cepal-api
+    ports:
+      - "5000:5000"
+
+  dash:
+    build: ./cepal-dashboard
+    container_name: cepal-dash
+    ports:
+      - "8000:8000"
+    environment:
+      API_BASE_URL: http://api:5000
+    depends_on:
+      - api
+
