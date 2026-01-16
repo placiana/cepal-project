@@ -2,8 +2,8 @@
 
 ## Proyectos intervinientes
 
-* Simulador: git@github.com:TobiasCarreira/cepal-tdp.git
-* Dashboard: git@github.com:sistemasmarcelocastro/cepal-dashboard.git
+* Simulador: https://github.com/TobiasCarreira/cepal-tdp
+* Dashboard: https://github.com/sistemasmarcelocastro/cepal-dashboard
 
 
 ## Clonar este proyecto
@@ -18,6 +18,8 @@ git clone --recurse-submodules git@github.com:placiana/cepal-project.git
 ```
 docker compose build
 ```
+
+Este paso puede demorar mucho tiempo.
 
 ## Levantar los servicios
 
