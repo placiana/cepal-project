@@ -27,6 +27,11 @@ Este paso puede demorar mucho tiempo.
 docker compose up
 ```
 
+## Como actualizar los submodulos a su último commit en main
+
+```
+git submodule update --remote --recursive
+```
 
 ## Como levantar los servicios sin docker
 
