@@ -5,14 +5,20 @@ services:
     container_name: cepal-api
     ports:
       - "5000:5000"
+    volumes:
+      - datos_compartidos:/app/data
 
   dash:
     build: ./cepal-dashboard
     container_name: cepal-dash
     ports:
       - "8000:8000"
+    volumes:
+      - datos_compartidos:/app/data2:ro
     environment:
       API_BASE_URL: http://api:5000
     depends_on:
       - api
 
+volumes:
+  datos_compartidos:
