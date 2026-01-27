@@ -1,7 +1,11 @@
 
 services:
   api:
-    build: ./cepal-tdp
+    build: 
+      context: ./cepal-tdp
+      args:
+        - RUN_MAKE=true
+        #- RUN_MAKE=false
     container_name: cepal-api
     ports:
       - "5000:5000"
