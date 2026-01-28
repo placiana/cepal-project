@@ -13,6 +13,12 @@ Clonamos el proyecto con todos sus submodulos
 git clone --recurse-submodules git@github.com:placiana/cepal-project.git
 ```
 
+## Actualizar los submodulos a su último commit en main
+
+```
+git submodule update --remote --recursive
+```
+
 ## Construir las imagenes
 
 ```
@@ -27,11 +33,15 @@ Este paso puede demorar mucho tiempo.
 docker compose up
 ```
 
-## Como actualizar los submodulos a su último commit en main
+## Bajar los servicios
 
 ```
-git submodule update --remote --recursive
+docker compose down -v
 ```
+
+El flag -v es importante para reiniciar los volumenes montados.
+
+
 
 ## Como levantar los servicios sin docker
 
