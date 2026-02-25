@@ -21,7 +21,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: appdb
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql/data
 
   
   dash:
@@ -31,6 +31,7 @@ services:
       - "5001:5001"
     volumes:
       - datos_compartidos:/app/data:ro # Aqui se pisa lo que hubiera en la imagen
+      - ./cepal-dashboard/migrations:/app/migrations # Para que el dashboard pueda acceder a las migraciones
     environment:
       API_BASE_URL: http://api:5000
     depends_on:
@@ -39,4 +40,3 @@ services:
 
 volumes:
   datos_compartidos: # Aca se almacena el resultado del make en el contenedor api
-  postgres_data:
