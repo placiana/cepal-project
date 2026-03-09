@@ -7,8 +7,9 @@ services:
         - RUN_MAKE=false
         #- RUN_MAKE=false
     container_name: cepal-api
+    command: gunicorn -b 0.0.0.0:5000 api_simulador:app --timeout 600 --workers 4
     ports:
-      - "5000:5000"
+      - "127.0.0.1:5000:5000"
     volumes:
       - datos_compartidos:/app/data # La primera vez que se monta un volumen, 
                                     # se copia el contenido de la imagen al volumen
@@ -27,8 +28,9 @@ services:
   dash:
     build: ./cepal-dashboard
     container_name: cepal-dash
+    command: gunicorn -b 0.0.0.0:5001 run:app --workers 4
     ports:
-      - "5001:5001"
+      - "127.0.0.1:5001:5001"
     volumes:
       - datos_compartidos:/app/data:ro # Aqui se pisa lo que hubiera en la imagen
       - ./cepal-dashboard/migrations:/app/migrations # Para que el dashboard pueda acceder a las migraciones
