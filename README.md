@@ -59,8 +59,45 @@ El flag -v es importante para reiniciar los volumenes montados.
 1. `cd demo2`
 1. `python index.py`
 
-Si el simulador está corriendo en otro host, podemos definir la variable de ambiente
-`API_BASE_URL=http://otro_hostname:5000`
+## Base de Datos y Backups
+
+La base de datos PostgreSQL utiliza un **named volume** llamado `db_data` para garantizar la persistencia de los datos de forma eficiente y segura.
+
+### Backups
+
+Se ha configurado un **bind mount** que vincula el directorio local `./backups` con el directorio `/backups` dentro del contenedor de la base de datos. Esto permite realizar volcados (dumps) de la base de datos que serán accesibles directamente desde el host.
+
+Para realizar un backup manual, puedes ejecutar el siguiente comando:
+
+```bash
+docker exec -t cepal-project-db-1 pg_dump -U postgres appdb > ./backups/backup_$(date +%Y%m%d_%H%M%S).sql
+```
+*(Nota: Asegúrate de que el nombre del contenedor sea el correcto, usualmente `cepal-project-db-1` o simplemente `db` si usas identificadores internos).*
+
+O bien, generando el archivo directamente dentro del volumen montado:
+
+```bash
+docker exec -t cepal-project-db-1 pg_dump -U postgres -f /backups/backup.sql appdb
+```
+Esto dejará el archivo `backup.sql` en tu carpeta local `./backups`.
+
+### Automatización con cron
+
+Se proporciona un script `backup_db.sh` que automatiza la generación del dump, su copia a un directorio del sistema (ej: `/var/local/backups/cepal`) y la eliminación de backups antiguos (por defecto, mantiene los últimos 7 días).
+
+#### Configuración del script
+
+1. Asegúrate de que el script tiene permisos de ejecución: `chmod +x backup_db.sh`.
+2. Edita las variables al inicio de `backup_db.sh` si necesitas cambiar las rutas o el tiempo de retención.
+3. Asegúrate de tener permisos de escritura en el directorio de sistema elegido.
+
+#### Programar en Crontab
+
+Para ejecutar el backup automáticamente todos los días a las 03:00 AM, añade la siguiente línea a tu crontab (`crontab -e`):
+
+```bash
+0 3 * * * /ruta/absoluta/al/proyecto/backup_db.sh >> /ruta/absoluta/al/proyecto/backups/log_backup.txt 2>&1
+```
 
 
 

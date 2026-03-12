@@ -22,7 +22,8 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: appdb
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
+      - ./backups:/backups
 
   
   dash:
@@ -42,3 +43,4 @@ services:
 
 volumes:
   datos_compartidos: # Aca se almacena el resultado del make en el contenedor api
+  db_data:
