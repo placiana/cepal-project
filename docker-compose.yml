@@ -7,6 +7,7 @@ services:
         - RUN_MAKE=false
         #- RUN_MAKE=false
     container_name: cepal-api
+    restart: unless-stopped
     command: gunicorn -b 0.0.0.0:5000 api_simulador:app --timeout 600 --workers 4
     ports:
       - "127.0.0.1:5000:5000"
@@ -29,6 +30,7 @@ services:
   dash:
     build: ./cepal-dashboard
     container_name: cepal-dash
+    restart: unless-stopped
     command: gunicorn -b 0.0.0.0:5001 run:app --workers 4
     ports:
       - "127.0.0.1:5001:5001"

@@ -29,19 +29,64 @@ Este paso puede demorar mucho tiempo.
 
 ## Levantar los servicios
 
+```bash
+docker compose up -d
 ```
-docker compose up
-```
+*(Nota: Se usa el flag `-d` para correr en segundo plano en producción).*
 
 ## Bajar los servicios
 
-```
+```bash
 docker compose down -v
 ```
 
-El flag -v es importante para reiniciar los volumenes montados.
+El flag `-v` es importante para reiniciar los volúmenes montados si se desea limpiar los datos.
 
+## Autoinicio en el Host (Producción)
 
+Para asegurar que los servicios se levanten automáticamente tras un reinicio del servidor, se recomienda una de las siguientes opciones:
+
+### Opción 1: Docker Restart Policy (Recomendado)
+
+Los servicios ya están configurados con `restart: unless-stopped` en `docker-compose.yml`. Para que esto funcione, asegúrate de que el servicio de Docker esté habilitado para iniciar con el sistema:
+
+```bash
+sudo systemctl enable docker
+```
+
+Con esto, cualquier contenedor que estuviera corriendo antes del reinicio (o que no haya sido detenido manualmente con `docker compose stop/down`) se levantará solo.
+
+### Opción 2: Systemd Unit (Más robusto)
+
+Si prefieres gestionar el proyecto completo como un servicio del sistema, puedes crear un archivo en `/etc/systemd/system/cepal.service`:
+
+```ini
+[Unit]
+Description=CEPAL Project Services
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/placiana/workspace/cepal-project
+ExecStart=/usr/bin/docker compose up -d
+ExecStop=/usr/bin/docker compose down
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Luego, habilita e inicia el servicio:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable cepal.service
+sudo systemctl start cepal.service
+```
+
+---
 
 ## Como levantar los servicios sin docker
 
